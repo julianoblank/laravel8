@@ -17,7 +17,7 @@ class PostController extends Controller
     }
 
     public function create() {
-
+        
         return view('admin.posts.create');
 
     }
@@ -27,7 +27,8 @@ class PostController extends Controller
        
        Post::create($request->all());
 
-       return redirect()->route('posts.index');
+       return redirect()->route('posts.index')
+                        ->with('message', "Post criado com sucesso");
 
     }
 
@@ -63,4 +64,17 @@ class PostController extends Controller
 
        return view('admin.posts.edit', array('post' => $post));
      }
+
+     public function update(StoreUpdatePost $request, $id) {
+
+        if(!$post = Post::find($id)){
+            return redirect()->back();
+        }
+ 
+        $post->update($request->all());
+
+        return redirect()->route('posts.index')
+                         ->with('message', "Post alterado com sucesso");
+        
+      }
 }
